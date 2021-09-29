@@ -1,13 +1,13 @@
-const puppeteer = require('puppeteer');
-const express = require('express');
-const fs = require('fs');
-const http = require('http');
-const { join, dirname } = require('path');
+const puppeteer = require("puppeteer");
+const express = require("express");
+const fs = require("fs");
+const http = require("http");
+const { join, dirname } = require("path");
 
 exports.generateOgImages = async (imageGenerationJobs) => {
   const servingUrl = await getServingUrl();
   const browser = await puppeteer.launch({
-    args: ['--no-sandbox', '--disable-setuid-sandbox'],
+    args: ["--no-sandbox", "--disable-setuid-sandbox"],
   });
   const page = await browser.newPage();
 
@@ -22,9 +22,7 @@ exports.generateOgImages = async (imageGenerationJobs) => {
     await page.screenshot({ path: imgPath, clip: { x: 0, y: 0, ...size } });
     // fs.unlinkSync(join("public", componentPath, "index.html"));
 
-    const printPath = `${imgPath.replace('public', '')} ${size.width}x${
-      size.height
-    }`;
+    const printPath = `${imgPath.replace("public", "")} ${size.width}x${size.height}`;
     console.log(`🖼  created Image: ${printPath}`);
   }
 
@@ -33,7 +31,7 @@ exports.generateOgImages = async (imageGenerationJobs) => {
 
 const getServingUrl = async () => {
   const app = express();
-  app.use(express.static('public'));
+  app.use(express.static("public"));
   const server = http.createServer(app);
   await server.listen(0);
   return `http://0.0.0.0:${server.address().port}/`;
@@ -45,7 +43,7 @@ const ensureThatImageDirExists = (path) => {
   try {
     fs.statSync(targetDir);
   } catch (err) {
-    if (err.code === 'ENOENT') {
+    if (err.code === "ENOENT") {
       fs.mkdirSync(targetDir, { recursive: true });
     }
   }
