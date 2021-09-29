@@ -3,7 +3,7 @@
 # Gatsby Plugin: Open Graph Images
 
 ![Publish](https://github.com/squer-solutions/gatsby-plugin-open-graph-images/workflows/Publish/badge.svg)
-[![npm version](http://img.shields.io/npm/v/gatsby-plugin-open-graph-images.svg?style=flat)](https://npmjs.org/package/gatsby-plugin-open-graph-images "View this project on npm")
+[![npm version](http://img.shields.io/npm/v/gatsby-plugin-open-graph-images.svg?style=flat)](https://npmjs.org/package/gatsby-plugin-open-graph-images 'View this project on npm')
 
 A [Gatsby](https://github.com/gatsbyjs/gatsby) plugin to derive and generated
 Images for the [Open Graph Protocol](https://ogp.me/) directly from React Components.
@@ -14,7 +14,7 @@ Images for the [Open Graph Protocol](https://ogp.me/) directly from React Compon
 2.  Place the plugin in your main `gatsby-config.js`:
 
 ```js
-plugins: [`gatsby-plugin-open-graph-images`];
+plugins: [`gatsby-plugin-open-graph-images`]
 ```
 
 ## How to use
@@ -23,28 +23,28 @@ The creation of Open Graph images is done by `createOpenGraphImage()` within you
 
 ```js
 exports.createPages = async ({ actions }) => {
-  const { createPage } = actions;
+  const { createPage } = actions
 
   const openGraphImage = createOpenGraphImage(createPage, {
-    path: "/og-image/index.png",
+    path: '/og-image/index.png',
     component: path.resolve(`src/templates/index.og-image.js`),
     size: {
       width: 400,
-      height: 50,
+      height: 50
     },
-    waitCondition: "networkidle0",
+    waitCondition: 'networkidle0',
     context: {
-      description: "a image created with gatsby-plugin-open-graph-images",
-    },
-  });
-};
+      description: 'a image created with gatsby-plugin-open-graph-images'
+    }
+  })
+}
 ```
 
 You can than simply include your open-graph image within your page. For example by using [react-helmet](https://github.com/nfl/react-helmet):
 
 ```jsx
 <Helmet>
-  <meta property="og:image" content={domain + "/og-image/index.png"} />
+  <meta property="og:image" content={domain + '/og-image/index.png'} />
   <meta property="og:image:width" content="400" />
   <meta property="og:image:width" content="50" />
 </Helmet>

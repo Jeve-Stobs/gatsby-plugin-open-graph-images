@@ -1,50 +1,52 @@
-const puppeteer = require("puppeteer");
-const express = require("express");
-const fs = require("fs");
-const http = require("http");
-const { join, dirname } = require("path");
+const puppeteer = require('puppeteer')
+const express = require('express')
+const fs = require('fs')
+const http = require('http')
+const { join, dirname } = require('path')
 
 exports.generateOgImages = async (imageGenerationJobs) => {
-  const servingUrl = await getServingUrl();
+  const servingUrl = await getServingUrl()
   const browser = await puppeteer.launch({
-    args: ["--no-sandbox", "--disable-setuid-sandbox"],
-  });
-  const page = await browser.newPage();
+    args: ['--no-sandbox', '--disable-setuid-sandbox']
+  })
+  const page = await browser.newPage()
 
   for (const imageGenerationJob of imageGenerationJobs) {
-    const { componentPath, imgPath, size, waitCondition } = imageGenerationJob;
-    const componentUrl = `${servingUrl}/${componentPath}`;
+    const { componentPath, imgPath, size, waitCondition } = imageGenerationJob
+    const componentUrl = `${servingUrl}/${componentPath}`
 
-    await page.setViewport(size);
-    await page.goto(componentUrl, { waitUntil: waitCondition });
+    await page.setViewport(size)
+    await page.goto(componentUrl, { waitUntil: waitCondition })
 
-    ensureThatImageDirExists(imgPath);
-    await page.screenshot({ path: imgPath, clip: { x: 0, y: 0, ...size } });
+    ensureThatImageDirExists(imgPath)
+    await page.screenshot({ path: imgPath, clip: { x: 0, y: 0, ...size } })
     // fs.unlinkSync(join("public", componentPath, "index.html"));
 
-    const printPath = `${imgPath.replace("public", "")} ${size.width}x${size.height}`;
-    console.log(`🖼  created Image: ${printPath}`);
+    const printPath = `${imgPath.replace('public', '')} ${size.width}x${
+      size.height
+    }`
+    console.log(`🖼  created Image: ${printPath}`)
   }
 
-  await browser.close();
-};
+  await browser.close()
+}
 
 const getServingUrl = async () => {
-  const app = express();
-  app.use(express.static("public"));
-  const server = http.createServer(app);
-  await server.listen(0);
-  return `http://0.0.0.0:${server.address().port}/`;
-};
+  const app = express()
+  app.use(express.static('public'))
+  const server = http.createServer(app)
+  await server.listen(0)
+  return `http://0.0.0.0:${server.address().port}/`
+}
 
 const ensureThatImageDirExists = (path) => {
-  const targetDir = dirname(path);
+  const targetDir = dirname(path)
 
   try {
-    fs.statSync(targetDir);
+    fs.statSync(targetDir)
   } catch (err) {
-    if (err.code === "ENOENT") {
-      fs.mkdirSync(targetDir, { recursive: true });
+    if (err.code === 'ENOENT') {
+      fs.mkdirSync(targetDir, { recursive: true })
     }
   }
-};
+}
